@@ -6,24 +6,18 @@ from Products.Five import zcml
 from zope.component import provideUtility
 from zope.interface import classProvides, implements
 import transmogrify.htmltesting
+import re
 
 class Context:
     pass
 
 
-config = """
-[transmogrifier]
-pipeline =
-    source
-    middle
-    clean
-    printer
-    
+CONFIG = """
 
 [clean]
 blueprint = collective.transmogrifier.sections.manipulator
 delete = 
-    _content
+    %(strip)s
 
 [printer]
 blueprint = collective.transmogrifier.sections.tests.pprinter
@@ -31,18 +25,8 @@ blueprint = collective.transmogrifier.sections.tests.pprinter
 """
 
 
-
-def testtransmogrifier(source=None, middle=None):
-    import pdb; pdb.set_trace()
-    
-    if source:
-        config = re.replace('[(.*)]',config, 'source')
-    if source:
-        config = re.replace('[(.*)]',config, 'source')
-    
-    transmogrify(config)
  
-def runner(config, args):
+def runner(config, args={}):
     from collective.transmogrifier.transmogrifier import Transmogrifier
 #    test.globs['transmogrifier'] = Transmogrifier(test.globs['plone'])
 
@@ -71,6 +55,18 @@ def runner(config, args):
         overrides = args
 
     transmogrifier(u'transmogrify.config.funnelweb', **overrides)
+
+
+
+
+def testtransmogrifier(config, strip=['_content']):
+    strip = '\t'+'\n\t'.join(strip)
+
+    config = re.sub('\.\.\.',config, 'clean\n\tprinter\n')
+    config += CONFIG
+    config = config % locals()
+    
+    runner(config)
 
 if __name__ == '__main__':
        main()
