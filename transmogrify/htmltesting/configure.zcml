@@ -7,10 +7,9 @@
 
 
 	  <include package="collective.transmogrifier" file="meta.zcml"/>
-<!--	  <include package="collective.transmogrifier"/> -->
+	  <include package="z3c.autoinclude" file="meta.zcml" />
+	  <includePlugins package="transmogrify"/>
 
-    <utility component=".webcrawler.WebCrawler"
-             name="transmogrify.webcrawler" />
 
 
 </configure>
