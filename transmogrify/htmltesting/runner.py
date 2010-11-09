@@ -32,6 +32,7 @@ def runner(config, args={}):
 #    test.globs['transmogrifier'] = Transmogrifier(test.globs['plone'])
 
     import zope.component
+    import zope.app.component
     import collective.transmogrifier.sections
     zcml.load_config('meta.zcml', zope.app.component)
 
