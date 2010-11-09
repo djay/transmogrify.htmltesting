@@ -6,6 +6,7 @@ from Products.Five import zcml
 from zope.component import provideUtility
 from zope.interface import classProvides, implements
 import transmogrify.htmltesting
+import zope.app.component
 import re
 
 class Context:
@@ -33,6 +34,7 @@ def runner(config, args={}):
     import zope.component
     import collective.transmogrifier.sections
     zcml.load_config('meta.zcml', zope.app.component)
+
     zcml.load_config('meta.zcml', collective.transmogrifier)
     zcml.load_config('configure.zcml', collective.transmogrifier.sections)
     zcml.load_config('configure.zcml', transmogrify.htmltesting)
